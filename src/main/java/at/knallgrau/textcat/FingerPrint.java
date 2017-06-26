@@ -56,7 +56,7 @@ public class FingerPrint {
          * 
          * @param file
          *                path to the FingerPrint-file
-         * @throws FingerPrintFileException
+         * @throws FingerPrintFileException if an exxception occurs creating the fingerprint
          */
     public FingerPrint(String file) throws FingerPrintFileException {
 	this.loadFingerPrintFromFile(file);
@@ -67,7 +67,7 @@ public class FingerPrint {
          * 
          * @param is
          *                InputStream for reading the FingerPrint
-         * @throws FingerPrintFileException
+         * @throws FingerPrintFileException if an error occurs reading the fringerprint
          */
     public FingerPrint(InputStream is) throws FingerPrintFileException {
 	this.loadFingerPrintFromInputStream(is);
@@ -168,7 +168,7 @@ public class FingerPrint {
          * FingerPrints in the passed Collection. the category of the
          * FingerPrint with the lowest distance is assigned to this FingerPrint.
          * 
-         * @param categories
+         * @param categories the fingerprints to compare against
          */
     public Map<String, Integer> categorize(Collection<FingerPrint> categories) {
 	int minDistance = Integer.MAX_VALUE;
@@ -191,7 +191,7 @@ public class FingerPrint {
          * computes and returns the distance of this FingerPrint to the
          * FingerPrint passed to the method.
          * 
-         * @param category
+         * @param category the single finrgreprint to compare against
          *                the FingerPrint to be compared to this one
          * @return the distance of the passed FingerPrint to this FingerPrint
          */
@@ -321,7 +321,7 @@ public class FingerPrint {
     }
 
     /**
-         * saves the fingerprint to a file named <categoryname>.lm in the
+         * saves the fingerprint to a file named &lt;categoryname&gt;.lm in the
          * execution path.
          */
     public void save() {
