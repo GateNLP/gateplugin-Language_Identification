@@ -12,19 +12,20 @@
  */
 package org.knallgrau.utils.textcat;
 
+import java.net.URISyntaxException;
+import java.net.URL;
+
+import at.knallgrau.textcat.TextCategorizer;
 import gate.Annotation;
 import gate.AnnotationSet;
 import gate.Utils;
 import gate.creole.ExecutionException;
 import gate.creole.ResourceInstantiationException;
+import gate.creole.ResourceReference;
 import gate.creole.metadata.CreoleParameter;
 import gate.creole.metadata.CreoleResource;
 import gate.creole.metadata.Optional;
 import gate.creole.metadata.RunTime;
-
-import java.net.URL;
-
-import at.knallgrau.textcat.TextCategorizer;
 
 @CreoleResource(name = "TextCat Language Identification", comment = "Recognizes the document language using TextCat", icon = "paw-print.png", helpURL = "http://gate.ac.uk/userguide/sec:misc-creole:language-identification")
 public class LanguageIdentifier extends gate.creole.AbstractLanguageAnalyser {
@@ -39,12 +40,12 @@ public class LanguageIdentifier extends gate.creole.AbstractLanguageAnalyser {
 
   private String annotationSetName;
 
-  private URL configURL;
+  private ResourceReference configURL;
 
   public LanguageIdentifier init() throws ResourceInstantiationException {
     try {
         guesser =
-                new TextCategorizer(configURL);
+                new TextCategorizer(configURL.toURL());
     } catch(Exception e) {
       throw new ResourceInstantiationException(
               "unable to load TextCat config file", e);
@@ -124,11 +125,20 @@ public class LanguageIdentifier extends gate.creole.AbstractLanguageAnalyser {
   }
 
   @CreoleParameter(defaultValue = "resources/default-names.conf")
-  public void setConfigURL(URL configURL) {
+  public void setConfigURL(ResourceReference configURL) {
     this.configURL = configURL;
   }
+  
+  @Deprecated
+  public void setConfigURL(URL configURL) {
+    try {
+      this.setConfigURL(new ResourceReference(configURL));
+    } catch(URISyntaxException e) {
+      throw new RuntimeException("Error converting URL to ResourceReference",e);
+    }
+  }
 
-  public URL getConfigURL() {
+  public ResourceReference getConfigURL() {
     return configURL;
   }
 }
