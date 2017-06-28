@@ -43,6 +43,9 @@ public class LanguageIdentifier extends gate.creole.AbstractLanguageAnalyser {
   private ResourceReference configURL;
 
   public LanguageIdentifier init() throws ResourceInstantiationException {
+    if (configURL == null)
+      throw new ResourceInstantiationException("configURL cannot be null");
+    
     try {
         guesser =
                 new TextCategorizer(configURL.toURL());
